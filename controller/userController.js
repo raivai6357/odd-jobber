@@ -198,9 +198,42 @@ const login = async (req, res) => {
   }
 };
 
+/*
+*
+@desc Check if a user with the given phone number exists
+@route POST /api/v1/users/checkExists
+@access Public
+*
+*/
+
+const checkUserExists = async (req, res) => {
+  try {
+    const { phone } = req.body;
+    const user = await User.findOne({ phone });
+
+    if (user) {
+      // User already exists
+      res.status(200).json({
+        message: 'User already exists',
+        user: user,
+      });
+    } else {
+      // User doesn't exist
+      res.status(404).json({
+        message: 'User not yet registered',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+};
+
 module.exports = {
   register,
   updatePassword,
   updateData,
   login,
+  checkUserExists
 };
