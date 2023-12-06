@@ -1,5 +1,4 @@
 const User = require('../model/userModel');
-const { use } = require('../routes/userRoutes');
 
 /* 
 *
@@ -152,7 +151,7 @@ const login = async (req, res) => {
   try {
     const { phone, password, email } = req.body;
 
-    if (!phone && !email) {
+    if (!phone) {
       return res.status(400).json({
         message: 'Please provide phone or email',
       });
