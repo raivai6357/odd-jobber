@@ -149,11 +149,11 @@ const updateData = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { phone, password, email } = req.body;
+    const { phone, password } = req.body;
 
     if (!phone) {
       return res.status(400).json({
-        message: 'Please provide phone or email',
+        message: 'Please provide phone',
       });
     }
 
@@ -163,7 +163,8 @@ const login = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ $or: [{ phone }, { email }] });
+    // const user = await User.findOne({ $or: [{ phone }, { email }] });
+    const user = await User.findOne({phone: phone})
 
     if (!user) {
       return res.status(404).json({
@@ -180,8 +181,14 @@ const login = async (req, res) => {
     }
 
     const accessToken = await user.getSignedJwtToken(user._id);
+    // const newUser = await User.findOneAndUpdate(
+    //   { $or: [{ phone }, { email }] },
+    //   { accessToken },
+    //   { new: true }
+    // );
+
     const newUser = await User.findOneAndUpdate(
-      { $or: [{ phone }, { email }] },
+      { phone: phone },
       { accessToken },
       { new: true }
     );
