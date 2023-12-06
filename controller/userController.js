@@ -150,7 +150,7 @@ const updateData = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { phone, email, password } = req.body;
+    const { phone, password, email } = req.body;
 
     if (!phone && !email) {
       return res.status(400).json({
